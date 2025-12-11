@@ -119,16 +119,16 @@ No plugin registration is needed; it is just a Python script.
 
 4. When finished, you should see messages similar to:
 
-    [*] Export directory: D:\samples\test\ida_export  
-    [+] Wrote meta.json  
-    [+] Wrote functions.jsonl and index.json, total 123 functions  
-    [+] Wrote strings.jsonl, total 456 strings  
-    [+] Wrote data.jsonl and data_index.json, total 78 data items  
-    [*] No user-defined local types found, skipping types.json  
-    [+] Wrote asm_index.json with 5 units  
-    [+] Copied sample to sample.bin  
-    [+] Created archive D:\samples\test\ida_export.zip  
-    [*] Export completed in 2.3 seconds  
+    Export directory: D:\samples\test\ida_export  
+    Wrote meta.json  
+    Wrote functions.jsonl and index.json, total 123 functions  
+    Wrote strings.jsonl, total 456 strings  
+    Wrote data.jsonl and data_index.json, total 78 data items  
+    No user-defined local types found, skipping types.json  
+    Wrote asm_index.json with 5 units  
+    Copied sample to sample.bin  
+    Created archive D:\samples\test\ida_export.zip  
+    Export completed in 2.3 seconds  
 
 5. Upload `ida_export.zip` to your LLM of choice (ChatGPT, Claude, etc.), and use a strict prompt that:
 
@@ -158,7 +158,7 @@ The Check Point article linked above has good ideas for designing such prompts (
 This project is intended for legitimate security research and malware analysis of software **you are authorized to analyze**.
 
 Do not use it for illegal purposes.  
-The author(s) are not responsible for any misuse of this tool.
+The author are not responsible for any misuse of this tool.
 
 ---
 
