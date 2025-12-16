@@ -143,7 +143,7 @@ The Check Point article linked above has good ideas for designing such prompts (
 
 ## Notes & Limitations
 
-- Only tested on **IDA Pro 9.2**. Other versions may have API differences.
+- Only tested on **IDA Pro 9.2**.
 - The script exports **static** data only:
   - it does not execute the sample,
   - it does not connect to the network,
