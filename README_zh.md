@@ -14,7 +14,7 @@
 > Generative AI for reverse engineering – *Offline IDA export pipeline: reverse engineering with AI in the cloud*  
 > https://research.checkpoint.com/2025/generative-ai-for-reverse-engineering/
 
-在阅读该文章后，我觉得这种工作流非常有意思，因此实现了一个自己的 IDA 导出脚本，尝试类似的思路：  
+阅读该文章后，我觉得挺有意思，就实现了一个 IDA 导出脚本，尝试类似的思路：  
 将 IDA 中所有重要的静态信息导出、打包成 zip，然后让 LLM 在完整上下文下对这些数据进行推理分析。
 
 ---
@@ -25,7 +25,7 @@
 - 专为 **IDA Pro 9.2** 设计并测试。
 - 可导出以下内容：
   - 元数据、段信息、导入表、导出表；
-  - 函数信息（包含指令、基本块、交叉引用、注释及 Hex-Rays 反编译结果（如可用））；
+  - 函数信息（包含指令、基本块、交叉引用、注释及 Hex-Rays 反编译结果（如果可用））；
   - 字符串及其引用关系；
   - 全局数据与命名数据项及其引用；
   - 可选：用户自定义的本地类型（仅 struct / enum / typedef，不包含系统 TIL 类型）；
@@ -45,27 +45,27 @@
     ├─ imports.json           # 导入模块及 API（名称 / ordinal / EA）
     ├─ exports.json           # 导出表（索引、ordinal、EA、名称）
     ├─ functions.jsonl        # NDJSON：函数信息（xrefs、基本块、指令、注释、bytes_concat、decomp_path）
-    ├─ index.json             # 函数索引（by_name、by_ea → functions.jsonl 行号）
+    ├─ index.json             # 函数索引（by_name、by_ea -> functions.jsonl 行号）
     ├─ strings.jsonl          # 字符串列表及其引用
     ├─ data.jsonl             # 全局数据 / 命名数据项及其引用
-    ├─ data_index.json        # 数据索引（by_name → EA）
+    ├─ data_index.json        # 数据索引（by_name -> EA）
     ├─ types.json             # （可选）用户定义的本地类型（struct / enum / typedef，不含系统类型）
     ├─ asm_index.json         # （可选）汇编导出单元索引（范围 / 函数 / 段）
     ├─ asm/                   # （可选）纯汇编切片
     │   ├─ func_*.asm         # 指定函数的反汇编
     │   ├─ range_*.asm        # 用户指定地址范围的反汇编
     │   └─ seg_*.asm          # 整个代码段的反汇编
-    ├─ decomp/                # Hex-Rays 伪代码（若可用）
+    ├─ decomp/                # Hex-Rays 伪代码（如果可用）
     │   └─ <name>_<ea>.c
     └─ sample.bin             # 原始样本文件（逐字节拷贝）
 
-这些格式刻意保持为简单的 JSON / JSONL，以便在与 LLM 交互时，能够精确引用 EA 和字段作为证据。
+这些格式保持为简单的 JSON / JSONL，以便在与 LLM 交互时，能够精确引用 EA 和字段作为证据。
 
 ---
 
 ## 环境要求
 
-- **IDA Pro 9.2**（脚本使用 9.2 API，不支持旧版本）。
+- **IDA Pro 9.2**（脚本使用 9.2 API）。
 - IDA 9.2 自带的 Python 3 环境。
 - 可选：Hex-Rays 反编译器（用于生成 `decomp/*.c`）。
 
@@ -135,7 +135,7 @@
    - 避免编造缺失信息；
    - 优先使用“未找到 + 解释原因”，而非猜测。
 
-Check Point 的文章中对提示词设计（如 evidence-first、local-first、禁止“化妆性修正”）给出了非常有价值的思路。
+Check Point 的文章中对提示词设计（如 evidence-first、local-first、no cosmetic transformations）给出了非常有价值的思路。
 
 ---
 
